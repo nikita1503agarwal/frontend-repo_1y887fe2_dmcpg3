@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import ParallaxHero from './components/ParallaxHero'
 import CartDrawer from './components/CartDrawer'
 import FooterRetro from './components/FooterRetro'
@@ -47,19 +47,17 @@ function App() {
   const handleRemove = (id) => setCart((c) => c.filter((i) => i.id !== id))
 
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-[radial-gradient(circle_at_20%_10%,#fce7f3_0%,transparent_25%),radial-gradient(circle_at_80%_0%,#e0f2fe_0%,transparent_25%),radial-gradient(circle_at_50%_100%,#dcfce7_0%,transparent_25%)] dark:bg-[radial-gradient(circle_at_20%_10%,#1f1630_0%,transparent_25%),radial-gradient(circle_at_80%_0%,#0d1b2a_0%,transparent_25%),radial-gradient(circle_at_50%_100%,#0f2d22_0%,transparent_25%)] text-slate-900 dark:text-slate-100">
-        <NavbarSoft darkMode={darkMode} onToggleTheme={() => setDarkMode((d) => !d)} onOpenCart={() => setCartOpen(true)} />
-        <Routes>
-          <Route path="/" element={<Home onOpenCart={() => setCartOpen(true)} darkMode={darkMode} onToggleTheme={() => setDarkMode((d) => !d)} />} />
-          <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="/categories/:categoryId" element={<SubcategoriesPage />} />
-          <Route path="/categories/:categoryId/:subId" element={<ProductsPage onAdd={handleAdd} />} />
-        </Routes>
-        <FooterRetro />
-        <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} items={cart} onRemove={handleRemove} />
-      </div>
-    </BrowserRouter>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_20%_10%,#fce7f3_0%,transparent_25%),radial-gradient(circle_at_80%_0%,#e0f2fe_0%,transparent_25%),radial-gradient(circle_at_50%_100%,#dcfce7_0%,transparent_25%)] dark:bg-[radial-gradient(circle_at_20%_10%,#1f1630_0%,transparent_25%),radial-gradient(circle_at_80%_0%,#0d1b2a_0%,transparent_25%),radial-gradient(circle_at_50%_100%,#0f2d22_0%,transparent_25%)] text-slate-900 dark:text-slate-100">
+      <NavbarSoft darkMode={darkMode} onToggleTheme={() => setDarkMode((d) => !d)} onOpenCart={() => setCartOpen(true)} />
+      <Routes>
+        <Route path="/" element={<Home onOpenCart={() => setCartOpen(true)} darkMode={darkMode} onToggleTheme={() => setDarkMode((d) => !d)} />} />
+        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/categories/:categoryId" element={<SubcategoriesPage />} />
+        <Route path="/categories/:categoryId/:subId" element={<ProductsPage onAdd={handleAdd} />} />
+      </Routes>
+      <FooterRetro />
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} items={cart} onRemove={handleRemove} />
+    </div>
   )
 }
 
