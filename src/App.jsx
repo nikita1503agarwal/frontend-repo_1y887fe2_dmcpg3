@@ -1,26 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import ParallaxHero from './components/ParallaxHero'
+import CategorySection from './components/CategorySection'
+import CartDrawer from './components/CartDrawer'
+import FooterRetro from './components/FooterRetro'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [darkMode, setDarkMode] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
+  const [cart, setCart] = useState([])
+
+  useEffect(() => {
+    if (darkMode) document.documentElement.classList.add('dark')
+    else document.documentElement.classList.remove('dark')
+  }, [darkMode])
+
+  const handleAdd = (p) => {
+    setCart((c) => {
+      const exist = c.find((i) => i.id === p.id)
+      if (exist) return c.map((i) => (i.id === p.id ? { ...i, qty: (i.qty || 1) + 1 } : i))
+      return [...c, { ...p, qty: 1 }]
+    })
+    setCartOpen(true)
+  }
+
+  const handleRemove = (id) => setCart((c) => c.filter((i) => i.id !== id))
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_20%_10%,#fce7f3_0%,transparent_25%),radial-gradient(circle_at_80%_0%,#e0f2fe_0%,transparent_25%),radial-gradient(circle_at_50%_100%,#dcfce7_0%,transparent_25%)] dark:bg-[radial-gradient(circle_at_20%_10%,#1f1630_0%,transparent_25%),radial-gradient(circle_at_80%_0%,#0d1b2a_0%,transparent_25%),radial-gradient(circle_at_50%_100%,#0f2d22_0%,transparent_25%)] text-slate-900 dark:text-slate-100">
+      <ParallaxHero
+        darkMode={darkMode}
+        onToggleTheme={() => setDarkMode((d) => !d)}
+        onOpenCart={() => setCartOpen(true)}
+        onOpenAccount={() => alert('Mock login/register modal')}
+      />
+      <CategorySection onAddToCart={handleAdd} />
+      <FooterRetro />
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} items={cart} onRemove={handleRemove} />
     </div>
   )
 }
